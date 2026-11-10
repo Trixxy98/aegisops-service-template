@@ -113,7 +113,9 @@ jobs:
 
   register:
     needs: [image, security]
-    if: github.event_name != 'pull_request'
+    # The template itself is not an AegisOps project: register only once a service copied
+    # from it sets the AEGISOPS_URL repository variable (and the AEGISOPS_API_KEY secret).
+    if: github.event_name != 'pull_request' && vars.AEGISOPS_URL != ''
     runs-on: self-hosted
     steps:
       - uses: actions/download-artifact@v4
